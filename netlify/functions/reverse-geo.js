@@ -8,7 +8,7 @@ exports.handler = async function (event, context) {
     if (event.httpMethod === "OPTIONS") {
         return {
             statusCode: 200,
-            headers,
+            headers: CORS_HEADERS,
             body: JSON.stringify({ message: "Successful preflight call." }),
         };
     }
