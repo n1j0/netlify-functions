@@ -4,21 +4,17 @@ exports.handler = async function (event, context) {
     }
 
     const lookup = require('coordinate_to_country');
-    const lat = event.queryStringParameters.lat;
-    const lon = event.queryStringParameters.lon;
+    const body = JSON.parse(event.body);
 
-    if (!lat || !lon) {
-        return {
-            headers: CORS_HEADERS,
-            statusCode: 400,
-            body: JSON.stringify({ error: 'lat and lon are required' }),
-        };
-    }
+    let countries = [];
 
-    const country = lookup(lat, lon, true)[0];
+    body.forEach(item => {
+        countries.push(lookup(item.lat, item.lon, true)[0]);
+    })
+
     return {
         headers: CORS_HEADERS,
         statusCode: 200,
-        body: JSON.stringify(country),
+        body: JSON.stringify(countries),
     };
 }
